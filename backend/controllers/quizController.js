@@ -1,0 +1,48 @@
+const Quiz = require('../models/Quiz');
+
+exports.getAllQuizzes = async (req, res) => {
+  try {
+    const quizzes = await Quiz.find().sort({ createdAt: -1 });
+    res.json(quizzes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.createQuiz = async (req, res) => {
+  const { title, description, questions } = req.body;
+  try {
+    const quiz = await Quiz.create({ title, description, questions, createdBy: req.user.id });
+    res.status(201).json(quiz);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getQuizById = async (req, res) => {
+  try {
+    const quiz = await Quiz.findById(req.params.id);
+    if (!quiz) return res.status(404).json({ message: 'Quiz not found' });
+    res.json(quiz);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.updateQuiz = async (req, res) => {
+  try {
+    const quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(quiz);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteQuiz = async (req, res) => {
+  try {
+    await Quiz.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Quiz deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
