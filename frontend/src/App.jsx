@@ -6,6 +6,7 @@ import Quizzes from './pages/Quizzes';
 import CreateQuiz from './pages/CreateQuiz';
 import EditQuiz from './pages/EditQuiz';
 import Results from './pages/Results';
+import TakeQuiz from './pages/TakeQuiz';
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="/quizzes/create" element={<PrivateRoute><CreateQuiz /></PrivateRoute>} />
           <Route path="/quizzes/edit/:id" element={<PrivateRoute><EditQuiz /></PrivateRoute>} />
           <Route path="/results" element={<PrivateRoute><Results /></PrivateRoute>} />
+          <Route path="/quiz/:id" element={<TakeQuiz />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
